@@ -2,8 +2,15 @@ package com.gibson.games;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 public class Snake {
 
@@ -40,6 +47,7 @@ public class Snake {
         snake_head = imageIcon.getImage();
 
         currentDirection = Direction.RIGHT;
+
     }
 
     public void drawSnake(Graphics graphics) {
@@ -89,6 +97,17 @@ public class Snake {
     }
 
     public void setDirection(Direction direction) {
+        if (direction == currentDirection)
+            return;
+        if (direction == Direction.LEFT && currentDirection == Direction.RIGHT)
+            return;
+        if (direction == Direction.RIGHT && currentDirection == Direction.LEFT)
+            return;
+        if (direction == Direction.UP && currentDirection == Direction.DOWN)
+            return;
+        if (direction == Direction.DOWN && currentDirection == Direction.UP)
+            return;
+
         currentDirection = direction;
     }
 

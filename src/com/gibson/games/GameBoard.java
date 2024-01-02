@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,7 +19,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 public class GameBoard extends JPanel {
 
@@ -56,7 +63,7 @@ public class GameBoard extends JPanel {
         prize = new Prize(BOARD_WIDTH, BOARD_HEIGHT, TILE_SIZE);
         prize.setRandomLocation();
 
-        addKeyListener(new DirectionKeyListener(snake));
+        // addKeyListener(new DirectionKeyListener(snake));
         addKeyListener(new ControlKeyListener(this));
 
         gameTimer = new Timer();
@@ -70,6 +77,47 @@ public class GameBoard extends JPanel {
         }
 
         gameActive = true;
+
+        createKeyBindings();
+    }
+
+    private void createKeyBindings() {
+
+        InputMap inputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = this.getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
+        actionMap.put("left", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snake.setDirection(Direction.LEFT);
+            }
+        });
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
+        actionMap.put("right", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snake.setDirection(Direction.RIGHT);
+            }
+        });
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
+        actionMap.put("up", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snake.setDirection(Direction.UP);
+            }
+        });
+
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+        actionMap.put("down", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                snake.setDirection(Direction.DOWN);
+            }
+        });
+
     }
 
     public void restartGame() {
